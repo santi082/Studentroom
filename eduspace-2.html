@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduSpace</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0f1e;font-family:'Noto Sans Thai','Segoe UI',sans-serif;color:#f1f5f9;min-height:100vh;}
+::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:#111827;}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px;}
+.bg-decor{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,#1e1b4b33 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,#0f2a1a33 0%,transparent 60%);pointer-events:none;z-index:0;}
+header{position:sticky;top:0;z-index:100;background:#0a0f1ecc;backdrop-filter:blur(12px);border-bottom:1px solid #ffffff10;}
+.header-inner{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.logo{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;color:#f1f5f9;letter-spacing:-0.5px;font-family:inherit;}
+.logo-star{color:#f59e0b;}
+nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.nav-btn{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:14px;padding:8px 14px;border-radius:8px;display:flex;align-items:center;gap:6px;font-family:inherit;transition:background 0.2s;}
+.nav-btn:hover{background:#ffffff10;}
+.nav-active{background:#ffffff12;border:none;cursor:pointer;color:#f1f5f9;font-size:14px;padding:8px 14px;border-radius:8px;display:flex;align-items:center;gap:6px;font-family:inherit;}
+.login-btn{background:#6366f122;border:1px solid #6366f144;cursor:pointer;color:#a5b4fc;font-size:14px;padding:8px 16px;border-radius:8px;display:flex;align-items:center;gap:6px;font-family:inherit;}
+.user-badge{display:flex;align-items:center;gap:6px;color:#94a3b8;font-size:13px;padding:6px 12px;background:#ffffff08;border-radius:20px;}
+.admin-badge{display:flex;align-items:center;gap:6px;color:#fbbf24;font-size:13px;padding:6px 12px;background:#f59e0b11;border-radius:20px;border:1px solid #f59e0b33;}
+main{max-width:1100px;margin:0 auto;padding:32px 24px;position:relative;z-index:1;}
+.notif{position:fixed;top:80px;right:24px;padding:12px 20px;border-radius:10px;color:white;font-weight:600;z-index:999;font-size:14px;animation:slideIn 0.3s ease;max-width:300px;}
+@keyframes slideIn{from{transform:translateX(100px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.hero{text-align:center;padding:48px 0 40px;}
+.hero-badge{display:inline-block;background:#f59e0b22;border:1px solid #f59e0b44;color:#fbbf24;padding:6px 18px;border-radius:20px;font-size:13px;margin-bottom:16px;}
+.hero-title{font-size:clamp(40px,8vw,64px);font-weight:900;margin:0 0 12px;letter-spacing:-2px;background:linear-gradient(135deg,#f1f5f9,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{color:#64748b;font-size:18px;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:900px;margin:0 auto;}
+.card{background:#111827;border:1px solid #ffffff10;border-radius:20px;padding:28px;text-align:left;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;font-family:inherit;width:100%;}
+.card:hover{transform:translateY(-4px);border-color:#ffffff25;}
+.card-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.card-title{font-size:20px;font-weight:700;margin:0 0 8px;}
+.card-desc{color:#64748b;font-size:14px;line-height:1.6;margin:0;}
+.card-arrow{position:absolute;bottom:20px;right:24px;font-size:24px;font-weight:700;}
+.page-wrap{max-width:800px;margin:0 auto;}
+.page-title{display:flex;align-items:center;gap:12px;font-size:28px;font-weight:800;margin-bottom:24px;}
+.tab-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.tab{background:#111827;border:1px solid #ffffff10;color:#64748b;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:14px;font-family:inherit;transition:all 0.2s;}
+.tab:hover{border-color:#ffffff25;color:#94a3b8;}
+.tab-active{background:#6366f122;border:1px solid #6366f1 !important;color:#a5b4fc !important;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;}
+.tab-green{background:#10b98122 !important;border:1px solid #10b981 !important;color:#6ee7b7 !important;}
+.tab-yellow{background:#f59e0b22 !important;border:1px solid #f59e0b !important;color:#fbbf24 !important;}
+.file-list{display:flex;flex-direction:column;gap:10px;}
+.file-card{background:#111827;border:1px solid #ffffff0a;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.file-icon{color:#6366f1;flex-shrink:0;}
+.file-info{flex:1;min-width:150px;}
+.file-name{font-weight:600;margin-bottom:4px;}
+.file-meta{color:#64748b;font-size:13px;}
+.lock-btn{background:#ef444422;border:1px solid #ef4444;color:#fca5a5;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;font-family:inherit;}
+.open-btn{background:#10b98122;border:1px solid #10b981;color:#6ee7b7;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;font-family:inherit;text-decoration:none;}
+.empty-state{color:#374151;text-align:center;padding:40px;font-size:16px;}
+.upload-btn{display:inline-flex;align-items:center;gap:8px;background:#6366f133;border:1px solid #6366f1;color:#a5b4fc;padding:10px 20px;border-radius:10px;cursor:pointer;margin-bottom:16px;font-size:14px;font-weight:600;font-family:inherit;}
+.key-btn{display:inline-flex;align-items:center;gap:6px;background:#f59e0b22;border:1px solid #f59e0b66;color:#fbbf24;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit;}
+.delete-btn{display:inline-flex;align-items:center;gap:6px;background:#ef444422;border:1px solid #ef444466;color:#f87171;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit;}
+.edit-btn{background:#334155;border:1px solid #475569;color:#94a3b8;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;}
+.chat-box{background:#111827;border:1px solid #ffffff0a;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;height:500px;}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
+.bubble{max-width:70%;padding:10px 14px;border-radius:18px;}
+.bubble-me{background:#6366f1;border-radius:18px 18px 4px 18px;margin-left:auto;}
+.bubble-other{background:#1e293b;border-radius:18px 18px 18px 4px;}
+.sender-name{color:#a5b4fc;font-size:12px;font-weight:700;margin-bottom:4px;}
+.msg-time{color:#94a3b899;font-size:11px;margin-top:4px;text-align:right;}
+.chat-input-row{display:flex;gap:10px;padding:16px;border-top:1px solid #ffffff0a;}
+.chat-input{flex:1;background:#1e293b;border:1px solid #334155;color:#f1f5f9;padding:12px 16px;border-radius:10px;font-size:15px;outline:none;font-family:inherit;}
+.send-btn{background:#6366f1;border:none;color:white;padding:0 20px;border-radius:10px;cursor:pointer;display:flex;align-items:center;}
+.tutoring-card{background:#111827;border:1px solid #ffffff0a;border-radius:16px;padding:28px;margin-bottom:16px;}
+.tutoring-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.tutoring-subject{font-size:22px;font-weight:700;color:#10b981;}
+.tutoring-price{background:#10b98122;border:1px solid #10b98166;color:#6ee7b7;padding:8px 16px;border-radius:20px;font-weight:700;}
+.tutoring-section{margin-bottom:20px;}
+.tutoring-label{display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:14px;margin-bottom:8px;font-weight:600;}
+.book-btn{background:#10b981;border:none;color:white;padding:12px 28px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;}
+.overlay{position:fixed;inset:0;background:#00000088;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:500;}
+.modal{background:#111827;border:1px solid #ffffff15;border-radius:20px;padding:32px;width:380px;max-width:92vw;max-height:90vh;overflow-y:auto;}
+.modal h3{color:#f1f5f9;margin-bottom:20px;font-size:20px;}
+.form-input{width:100%;background:#1e293b;border:1px solid #334155;color:#f1f5f9;padding:12px 16px;border-radius:10px;font-size:15px;outline:none;box-sizing:border-box;margin-bottom:12px;font-family:inherit;}
+.form-input:focus{border-color:#6366f1;}
+.modal-btns{display:flex;gap:10px;margin-top:4px;}
+.confirm-btn{flex:1;background:#6366f1;border:none;color:white;padding:12px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;}
+.confirm-btn:hover{background:#4f46e5;}
+.cancel-btn{flex:1;background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:12px;border-radius:10px;cursor:pointer;font-size:15px;font-family:inherit;}
+.form-label{display:block;color:#94a3b8;font-size:13px;margin-bottom:6px;margin-top:8px;}
+textarea.form-input{min-height:80px;resize:vertical;}
+.switch-mode{text-align:center;margin-top:16px;color:#64748b;font-size:13px;}
+.switch-mode button{color:#6366f1;background:none;border:none;cursor:pointer;font-size:13px;font-family:inherit;}
+.hidden{display:none !important;}
+.flex-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.code-active{color:#f59e0b;}
+.code-none{color:#64748b;}
+/* subject management */
+.subject-item{background:#111827;border:1px solid #ffffff0a;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.subject-item input{flex:1;background:#1e293b;border:1px solid #334155;color:#f1f5f9;padding:8px 12px;border-radius:8px;font-size:14px;outline:none;font-family:inherit;}
+.add-btn{display:inline-flex;align-items:center;gap:8px;background:#10b98122;border:1px solid #10b981;color:#6ee7b7;padding:10px 20px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;margin-top:8px;}
+/* code log table */
+.log-table{width:100%;border-collapse:collapse;font-size:13px;}
+.log-table th{text-align:left;padding:10px 12px;color:#64748b;border-bottom:1px solid #1e293b;font-weight:600;}
+.log-table td{padding:10px 12px;border-bottom:1px solid #ffffff06;color:#cbd5e1;vertical-align:top;}
+.log-table tr:hover td{background:#ffffff04;}
+.badge-used{background:#ef444422;color:#f87171;padding:2px 8px;border-radius:4px;font-size:12px;}
+.badge-active{background:#10b98122;color:#6ee7b7;padding:2px 8px;border-radius:4px;font-size:12px;}
+@media(max-width:600px){
+  .header-inner{padding:12px 16px;}
+  main{padding:20px 16px;}
+  .hero-title{font-size:40px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-decor"></div>
+<div id="notif" class="notif hidden"></div>
+
+<header>
+  <div class="header-inner">
+    <button class="logo" onclick="showPage('home')">
+      <span class="logo-star">✦</span><span>EduSpace</span>
+    </button>
+    <nav>
+      <button class="nav-btn" id="nav-home" onclick="showPage('home')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>หน้าหลัก
+      </button>
+      <button class="nav-btn hidden" id="nav-admin" onclick="showPage('admin')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>แผงควบคุม
+      </button>
+      <span id="user-badge" class="user-badge hidden"></span>
+      <span id="admin-badge" class="admin-badge hidden">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>ผู้ดูแลระบบ
+      </span>
+      <button class="login-btn" id="auth-btn" onclick="handleAuth()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>เข้าสู่ระบบ
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <div id="page-home">
+    <div class="hero">
+      <div class="hero-badge">✦ ระบบการศึกษา</div>
+      <h1 class="hero-title">EduSpace</h1>
+      <p class="hero-sub">แหล่งรวมการเรียนรู้ เฉลยการบ้าน และการติวส่วนตัว</p>
+    </div>
+    <div class="card-grid">
+      <button class="card" onclick="showPage('homework')">
+        <div class="card-icon" style="background:#f59e0b22;color:#f59e0b;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3 class="card-title" style="color:#f59e0b;">เฉลยการบ้าน</h3>
+        <p class="card-desc">ดูเฉลยการบ้านแยกตามวิชา ปลดล็อคด้วยรหัสจากผู้ดูแล</p>
+        <div class="card-arrow" style="color:#f59e0b;">→</div>
+      </button>
+      <button class="card" onclick="showPage('chat')">
+        <div class="card-icon" style="background:#6366f122;color:#6366f1;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3 class="card-title" style="color:#6366f1;">สอบถามข้อมูล</h3>
+        <p class="card-desc">แชทโดยตรงกับผู้ดูแลระบบ รับคำตอบได้เร็วทันใจ</p>
+        <div class="card-arrow" style="color:#6366f1;">→</div>
+      </button>
+      <button class="card" onclick="showPage('tutoring')">
+        <div class="card-icon" style="background:#10b98122;color:#10b981;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <h3 class="card-title" style="color:#10b981;">สอนการบ้าน</h3>
+        <p class="card-desc">ดูข้อมูลการติวและตารางเวลา พร้อมราคาแต่ละวิชา</p>
+        <div class="card-arrow" style="color:#10b981;">→</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- HOMEWORK -->
+  <div id="page-homework" class="page-wrap hidden">
+    <h2 class="page-title"><span style="color:#f59e0b;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span> เฉลยการบ้าน</h2>
+    <div class="tab-row" id="hw-tabs"></div>
+    <div class="file-list" id="hw-file-list"></div>
+  </div>
+
+  <!-- CHAT -->
+  <div id="page-chat" class="page-wrap hidden">
+    <h2 class="page-title"><span style="color:#6366f1;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> สอบถามข้อมูล</h2>
+    <div class="chat-box">
+      <div class="chat-messages" id="chat-messages"></div>
+      <div id="guest-name-row" class="hidden" style="padding:8px 16px 0;">
+        <input class="form-input" id="guest-name-input" placeholder="ชื่อของคุณ" style="margin-bottom:0;"/>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <button class="send-btn" onclick="sendMsg()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TUTORING -->
+  <div id="page-tutoring" class="page-wrap hidden">
+    <h2 class="page-title"><span style="color:#10b981;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span> สอนการบ้าน</h2>
+    <div class="tab-row" id="tutor-tabs"></div>
+    <div id="tutor-content"></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="page-admin" class="page-wrap hidden">
+    <h2 class="page-title"><span style="color:#f59e0b;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> แผงควบคุมผู้ดูแล</h2>
+    <div class="tab-row">
+      <button class="tab tab-yellow tab-active" id="atab-hw" onclick="switchAdminTab('hw')">จัดการเฉลย</button>
+      <button class="tab" id="atab-subjects" onclick="switchAdminTab('subjects')">จัดการวิชา</button>
+      <button class="tab" id="atab-tutor" onclick="switchAdminTab('tutor')">จัดการติว</button>
+      <button class="tab" id="atab-chat" onclick="switchAdminTab('chat')">แชท</button>
+      <button class="tab" id="atab-users" onclick="switchAdminTab('users')">ผู้ใช้ & รหัส</button>
+    </div>
+    <div id="apanel-hw">
+      <div class="tab-row" id="admin-hw-tabs"></div>
+      <button class="upload-btn" onclick="adminUpload()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>อัพโหลดไฟล์</button>
+      <div class="file-list" id="admin-file-list"></div>
+    </div>
+    <div id="apanel-subjects" class="hidden">
+      <p style="color:#64748b;font-size:14px;margin-bottom:16px;">แก้ไขชื่อวิชา เพิ่ม หรือลบวิชาได้ที่นี่</p>
+      <div id="subjects-list"></div>
+      <button class="add-btn" onclick="addSubject()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>เพิ่มวิชา</button>
+      <div style="margin-top:16px;">
+        <button class="confirm-btn" style="max-width:160px;" onclick="saveSubjects()">บันทึกวิชา</button>
+      </div>
+    </div>
+    <div id="apanel-tutor" class="hidden"><div id="admin-tutor-list"></div></div>
+    <div id="apanel-chat" class="hidden">
+      <div class="chat-box">
+        <div class="chat-messages" id="admin-chat-messages"></div>
+        <div class="chat-input-row">
+          <input class="chat-input" id="admin-chat-input" placeholder="ตอบกลับ..." onkeydown="if(event.key==='Enter')sendAdminMsg()"/>
+          <button class="send-btn" onclick="sendAdminMsg()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div id="apanel-users" class="hidden">
+      <p style="color:#64748b;font-size:14px;margin-bottom:16px;">ประวัติการใช้รหัสทั้งหมด — 1 รหัสใช้ได้ 1 คนเท่านั้น</p>
+      <div id="admin-user-list"></div>
+    </div>
+  </div>
+</main>
+
+<!-- LOGIN MODAL -->
+<div class="overlay hidden" id="login-modal">
+  <div class="modal">
+    <h3 id="login-title">เข้าสู่ระบบ</h3>
+    <label class="form-label">ชื่อผู้ใช้</label>
+    <input class="form-input" id="login-user" placeholder="username" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <label class="form-label">รหัสผ่าน</label>
+    <input class="form-input" id="login-pass" type="password" placeholder="password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <div class="modal-btns">
+      <button class="confirm-btn" id="login-submit-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+      <button class="cancel-btn" onclick="hide('login-modal')">ยกเลิก</button>
+    </div>
+    <div class="switch-mode">
+      <span id="switch-text">ยังไม่มีบัญชี? </span>
+      <button onclick="toggleLoginMode()"><span id="switch-btn-text">สมัครสมาชิก</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- CODE MODAL -->
+<div class="overlay hidden" id="code-modal">
+  <div class="modal">
+    <h3 style="color:#f59e0b;">🔑 ใส่รหัสปลดล็อค</h3>
+    <p style="color:#94a3b8;margin-bottom:16px;font-size:14px;">กรอกรหัสที่ได้รับจากผู้ดูแล รหัสใช้ได้ 1 ครั้ง / 1 คน เท่านั้น</p>
+    <input class="form-input" id="code-input" placeholder="รหัส เช่น ABC123" onkeydown="if(event.key==='Enter')doUnlock()"/>
+    <div class="modal-btns">
+      <button class="confirm-btn" onclick="doUnlock()">ยืนยัน</button>
+      <button class="cancel-btn" onclick="hide('code-modal')">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+<!-- TUTOR EDIT MODAL -->
+<div class="overlay hidden" id="tutor-modal">
+  <div class="modal">
+    <h3 style="color:#10b981;">แก้ไขข้อมูลการติว</h3>
+    <input type="hidden" id="edit-tutor-id"/>
+    <label class="form-label">คำอธิบาย</label>
+    <textarea class="form-input" id="edit-tutor-desc" rows="3"></textarea>
+    <label class="form-label">ราคา (บาท/ชั่วโมง)</label>
+    <input class="form-input" id="edit-tutor-price" type="number"/>
+    <label class="form-label">เวลาที่สามารถติวได้</label>
+    <input class="form-input" id="edit-tutor-times"/>
+    <div class="modal-btns" style="margin-top:12px;">
+      <button class="confirm-btn" style="background:#10b981;" onclick="saveTutor()">บันทึก</button>
+      <button class="cancel-btn" onclick="hide('tutor-modal')">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+// STATE — โหลดจาก localStorage ถ้ามี
+// ════════════════════════════════════════════════════
+const DEFAULT_STATE = {
+  users: [],
+  subjects: ["วิชา 1","วิชา 2","วิชา 3","วิชา 4"],
+  homeworkFiles: {"0":[],"1":[],"2":[],"3":[]},
+  tutoring: [
+    {id:0,subject:"วิชา 1",description:"ติวคณิตศาสตร์พื้นฐาน บทที่ 1-5 พร้อมแบบฝึกหัด",price:300,times:"จ-พ 17:00-20:00 / เสาร์-อาทิตย์ 09:00-18:00"},
+    {id:1,subject:"วิชา 2",description:"ติวฟิสิกส์ กลศาสตร์และไฟฟ้า",price:350,times:"อ-ศ 16:00-19:00"},
+    {id:2,subject:"วิชา 3",description:"ติวเคมี ปฏิกิริยาและสารละลาย",price:280,times:"จ-ศ 18:00-21:00"},
+    {id:3,subject:"วิชา 4",description:"ติวชีววิทยา เซลล์และพันธุกรรม",price:250,times:"เสาร์-อาทิตย์ 10:00-17:00"}
+  ],
+  chatMessages: [{id:1,from:"admin",text:"สวัสดีครับ มีอะไรให้ช่วยไหมครับ?",time:"10:00"}],
+  codes: {},        // fileId -> code (active unused)
+  codeLog: []       // {code, fileId, fileName, usedBy, usedAt, subjectIdx}
+};
+
+function loadState() {
+  try {
+    const s = localStorage.getItem('eduspace_state');
+    if (s) return JSON.parse(s);
+  } catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_STATE));
+}
+function saveState() {
+  try { localStorage.setItem('eduspace_state', JSON.stringify(state)); } catch(e){}
+}
+
+let state = loadState();
+
+// session only (ไม่เก็บใน localStorage เพื่อความปลอดภัย)
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "admin123";
+
+// โหลด session จาก sessionStorage
+let currentUser = null;
+let isAdmin = false;
+try {
+  const sess = sessionStorage.getItem('eduspace_session');
+  if (sess) {
+    const s = JSON.parse(sess);
+    if (s.isAdmin) { isAdmin = true; }
+    else if (s.userId) {
+      currentUser = state.users.find(u => u.id === s.userId) || null;
+    }
+  }
+} catch(e){}
+
+function saveSession() {
+  try {
+    if (isAdmin) sessionStorage.setItem('eduspace_session', JSON.stringify({isAdmin:true}));
+    else if (currentUser) sessionStorage.setItem('eduspace_session', JSON.stringify({userId:currentUser.id}));
+    else sessionStorage.removeItem('eduspace_session');
+  } catch(e){}
+}
+
+let currentPage = "home";
+let hwActiveSub = 0;
+let tutorActiveSub = 0;
+let adminHwSub = 0;
+let adminTab = "hw";
+let loginMode = "login";
+let pendingUnlockFile = null;
+
+// ════════════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════════════
+function $(id){ return document.getElementById(id); }
+function show(id){ $(id).classList.remove('hidden'); }
+function hide(id){ $(id).classList.add('hidden'); }
+function genCode(){ return Math.random().toString(36).substring(2,8).toUpperCase(); }
+function notify(msg, type="success"){
+  const el = $('notif');
+  el.textContent = msg;
+  el.style.background = type==='success'?'#10b981':type==='error'?'#ef4444':'#6366f1';
+  show('notif');
+  clearTimeout(window._nt);
+  window._nt = setTimeout(()=>hide('notif'),3000);
+}
+
+// ════════════════════════════════════════════════════
+// PAGES
+// ════════════════════════════════════════════════════
+function showPage(p) {
+  ['home','homework','chat','tutoring','admin'].forEach(pg=>hide('page-'+pg));
+  if (p==='admin' && !isAdmin){ notify('ไม่มีสิทธิ์เข้าถึง','error'); show('page-home'); currentPage='home'; updateHeader(); return; }
+  show('page-'+p);
+  currentPage = p;
+  $('nav-home').className = p==='home'?'nav-active':'nav-btn';
+  $('nav-admin').className = p==='admin'?'nav-active':'nav-btn';
+  if(p==='homework') renderHW();
+  if(p==='chat'){ renderChat(); updateGuestRow(); }
+  if(p==='tutoring') renderTutoring();
+  if(p==='admin'){ renderAdminHW(); renderAdminTutor(); renderSubjectsList(); renderAdminUsers(); }
+}
+
+// ════════════════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════════════════
+function handleAuth(){
+  if(currentUser||isAdmin){
+    currentUser=null; isAdmin=false; saveSession();
+    updateHeader(); showPage('home'); notify('ออกจากระบบแล้ว','info');
+  } else {
+    loginMode='login'; updateLoginModal(); show('login-modal');
+  }
+}
+function updateLoginModal(){
+  $('login-title').textContent = loginMode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
+  $('login-submit-btn').textContent = loginMode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
+  $('switch-text').textContent = loginMode==='login'?'ยังไม่มีบัญชี? ':'มีบัญชีแล้ว? ';
+  $('switch-btn-text').textContent = loginMode==='login'?'สมัครสมาชิก':'เข้าสู่ระบบ';
+  $('login-user').value=''; $('login-pass').value='';
+}
+function toggleLoginMode(){ loginMode=loginMode==='login'?'register':'login'; updateLoginModal(); }
+function doLogin(){
+  const u=$('login-user').value.trim(), p=$('login-pass').value.trim();
+  if(!u||!p){ notify('กรุณากรอกข้อมูลให้ครบ','error'); return; }
+  if(loginMode==='login'){
+    if(u===ADMIN_USER && p===ADMIN_PASS){
+      isAdmin=true; currentUser=null; saveSession();
+      updateHeader(); hide('login-modal'); showPage('admin'); notify('ยินดีต้อนรับ ผู้ดูแลระบบ'); return;
+    }
+    const user=state.users.find(x=>x.username===u && x.password===p);
+    if(user){ currentUser=user; isAdmin=false; saveSession(); updateHeader(); hide('login-modal'); notify('ยินดีต้อนรับ '+user.username); return; }
+    notify('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง','error');
+  } else {
+    if(state.users.find(x=>x.username===u)){ notify('ชื่อผู้ใช้นี้ถูกใช้แล้ว','error'); return; }
+    const nu={id:Date.now(), username:u, password:p, unlockedFiles:[]};
+    state.users.push(nu); saveState();
+    currentUser=nu; isAdmin=false; saveSession();
+    updateHeader(); hide('login-modal'); notify('สมัครสมาชิกสำเร็จ! ยินดีต้อนรับ '+u);
+  }
+}
+function updateHeader(){
+  const btn=$('auth-btn');
+  if(currentUser||isAdmin)
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> ออกจากระบบ';
+  else
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> เข้าสู่ระบบ';
+  if(isAdmin){ hide('nav-home'); show('nav-admin'); hide('user-badge'); show('admin-badge'); }
+  else if(currentUser){ show('nav-home'); hide('nav-admin'); show('user-badge'); hide('admin-badge'); $('user-badge').textContent='👤 '+currentUser.username; }
+  else { show('nav-home'); hide('nav-admin'); hide('user-badge'); hide('admin-badge'); }
+}
+
+// ════════════════════════════════════════════════════
+// HOMEWORK (ดูอย่างเดียว)
+// ════════════════════════════════════════════════════
+function renderHW(){
+  const tabsEl=$('hw-tabs');
+  tabsEl.innerHTML=state.subjects.map((s,i)=>
+    `<button class="tab ${i===hwActiveSub?'tab-active':''}" onclick="setHWSub(${i})">${s}</button>`
+  ).join('');
+  const files=state.homeworkFiles[hwActiveSub]||[];
+  const listEl=$('hw-file-list');
+  if(!files.length){ listEl.innerHTML='<div class="empty-state">ยังไม่มีไฟล์ในวิชานี้</div>'; return; }
+  listEl.innerHTML=files.map(f=>{
+    const unlocked=currentUser&&currentUser.unlockedFiles.includes(f.id);
+    const btn=unlocked
+      ? `<button class="open-btn" onclick="openFile('${f.url}','${f.name}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>เปิดไฟล์</button>`
+      : `<button class="lock-btn" onclick="tryUnlock('${f.id}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>ใส่รหัส</button>`;
+    return `<div class="file-card">
+      <div class="file-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
+      <div class="file-info"><div class="file-name">${f.name}</div><div class="file-meta">อัพโหลด: ${f.uploadedAt}</div></div>
+      <div>${btn}</div>
+    </div>`;
+  }).join('');
+}
+function setHWSub(i){ hwActiveSub=i; renderHW(); }
+function openFile(url,name){ if(url&&url!=='#') window.open(url,'_blank'); else notify('ไฟล์นี้ยังไม่ได้แนบลิงก์ (demo)','info'); }
+function tryUnlock(fileId){
+  if(!currentUser){ show('login-modal'); updateLoginModal(); notify('กรุณาเข้าสู่ระบบก่อน','error'); return; }
+  pendingUnlockFile=fileId; $('code-input').value=''; show('code-modal');
+}
+function doUnlock(){
+  const code=$('code-input').value.trim().toUpperCase();
+  if(!code){ notify('กรุณาใส่รหัส','error'); return; }
+  const stored=state.codes[pendingUnlockFile];
+  if(!stored){ notify('รหัสนี้ไม่มีในระบบหรือถูกใช้ไปแล้ว','error'); return; }
+  if(code!==stored){ notify('รหัสไม่ถูกต้อง','error'); return; }
+  // burn code
+  delete state.codes[pendingUnlockFile];
+  // unlock for this user
+  if(!currentUser.unlockedFiles.includes(pendingUnlockFile))
+    currentUser.unlockedFiles.push(pendingUnlockFile);
+  // log
+  const allFiles=Object.values(state.homeworkFiles).flat();
+  const f=allFiles.find(x=>x.id===pendingUnlockFile);
+  state.codeLog.push({
+    code, fileId:pendingUnlockFile,
+    fileName:f?f.name:'ไม่ทราบ',
+    usedBy:currentUser.username,
+    usedAt:new Date().toLocaleString('th-TH')
+  });
+  saveState();
+  hide('code-modal'); renderHW(); notify('ปลดล็อคสำเร็จ! สามารถเปิดไฟล์ได้แล้ว');
+}
+
+// ════════════════════════════════════════════════════
+// CHAT (ดูและส่งได้ แต่ไม่แก้ไขข้อความเก่า)
+// ════════════════════════════════════════════════════
+function renderChat(){
+  const el=$('chat-messages');
+  const me=currentUser?currentUser.username:($('guest-name-input')?$('guest-name-input').value:'');
+  el.innerHTML=state.chatMessages.map(m=>{
+    const isMe=m.from===me;
+    return `<div style="display:flex;justify-content:${isMe?'flex-end':'flex-start'}">
+      <div class="bubble ${isMe?'bubble-me':'bubble-other'}">
+        ${!isMe?`<div class="sender-name">${m.from}</div>`:''}
+        <div style="color:#f1f5f9">${m.text}</div>
+        <div class="msg-time">${m.time}</div>
+      </div></div>`;
+  }).join('');
+  el.scrollTop=el.scrollHeight;
+}
+function renderAdminChat(){
+  const el=$('admin-chat-messages');
+  el.innerHTML=state.chatMessages.map(m=>{
+    const isMe=m.from==='admin';
+    return `<div style="display:flex;justify-content:${isMe?'flex-end':'flex-start'}">
+      <div class="bubble ${isMe?'bubble-me':'bubble-other'}">
+        ${!isMe?`<div class="sender-name">${m.from}</div>`:''}
+        <div style="color:#f1f5f9">${m.text}</div>
+        <div class="msg-time">${m.time}</div>
+      </div></div>`;
+  }).join('');
+  el.scrollTop=el.scrollHeight;
+}
+function updateGuestRow(){
+  if(!currentUser&&!isAdmin) show('guest-name-row'); else hide('guest-name-row');
+}
+function sendMsg(){
+  const input=$('chat-input'); const msg=input.value.trim(); if(!msg) return;
+  const name=currentUser?currentUser.username:($('guest-name-input').value.trim()||null);
+  if(!name){ notify('กรุณาใส่ชื่อก่อนส่งข้อความ','error'); return; }
+  const now=new Date();
+  state.chatMessages.push({id:Date.now(),from:name,text:msg,time:now.toTimeString().slice(0,5)});
+  saveState(); input.value=''; renderChat();
+  if(adminTab==='chat') renderAdminChat();
+}
+function sendAdminMsg(){
+  const input=$('admin-chat-input'); const msg=input.value.trim(); if(!msg) return;
+  const now=new Date();
+  state.chatMessages.push({id:Date.now(),from:'admin',text:msg,time:now.toTimeString().slice(0,5)});
+  saveState(); input.value=''; renderAdminChat();
+  if(currentPage==='chat') renderChat();
+}
+
+// ════════════════════════════════════════════════════
+// TUTORING (ดูอย่างเดียว)
+// ════════════════════════════════════════════════════
+function renderTutoring(){
+  $('tutor-tabs').innerHTML=state.subjects.map((s,i)=>
+    `<button class="tab ${i===tutorActiveSub?'tab-active tab-green':''}" onclick="setTutorSub(${i})">${s}</button>`
+  ).join('');
+  const t=state.tutoring[tutorActiveSub]||state.tutoring[0];
+  $('tutor-content').innerHTML=`
+    <div class="tutoring-card">
+      <div class="tutoring-header">
+        <div class="tutoring-subject">${t.subject}</div>
+        <div class="tutoring-price">฿${t.price} / ชั่วโมง</div>
+      </div>
+      <div class="tutoring-section">
+        <div class="tutoring-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>รายละเอียด</div>
+        <p style="color:#cbd5e1;line-height:1.7;">${t.description}</p>
+      </div>
+      <div class="tutoring-section">
+        <div class="tutoring-label"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>เวลาที่สามารถติวได้</div>
+        <p style="color:#cbd5e1;line-height:1.7;">${t.times}</p>
+      </div>
+      <button class="book-btn" onclick="showPage('chat')">จองการติว / ติดต่อ</button>
+    </div>`;
+}
+function setTutorSub(i){ tutorActiveSub=i; renderTutoring(); }
+
+// ════════════════════════════════════════════════════
+// ADMIN — SUBJECTS
+// ════════════════════════════════════════════════════
+function renderSubjectsList(){
+  const el=$('subjects-list'); if(!el) return;
+  el.innerHTML=state.subjects.map((s,i)=>`
+    <div class="subject-item">
+      <input id="subj-${i}" value="${s}" placeholder="ชื่อวิชา"/>
+      <button class="delete-btn" onclick="removeSubject(${i})" ${state.subjects.length<=1?'disabled':''}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </button>
+    </div>`).join('');
+}
+function addSubject(){
+  state.subjects.push('วิชาใหม่');
+  state.homeworkFiles[state.subjects.length-1]=[];
+  state.tutoring.push({id:state.subjects.length-1,subject:'วิชาใหม่',description:'',price:0,times:''});
+  saveState(); renderSubjectsList();
+}
+function removeSubject(i){
+  if(state.subjects.length<=1){ notify('ต้องมีอย่างน้อย 1 วิชา','error'); return; }
+  if(!confirm('ลบวิชา "'+state.subjects[i]+'" และไฟล์ทั้งหมดในวิชานี้?')) return;
+  state.subjects.splice(i,1);
+  // reindex files & tutoring
+  const newFiles={};
+  state.subjects.forEach((_,idx)=>{ newFiles[idx]=state.homeworkFiles[idx]||[]; });
+  state.homeworkFiles=newFiles;
+  state.tutoring=state.subjects.map((s,idx)=>{
+    const old=state.tutoring[idx]||{};
+    return {id:idx,subject:s,description:old.description||'',price:old.price||0,times:old.times||''};
+  });
+  saveState(); renderSubjectsList(); notify('ลบวิชาแล้ว');
+}
+function saveSubjects(){
+  state.subjects=state.subjects.map((_,i)=>{
+    const inp=$('subj-'+i); return inp?inp.value.trim()||_:_;
+  });
+  // sync tutoring subject names
+  state.subjects.forEach((s,i)=>{ if(state.tutoring[i]) state.tutoring[i].subject=s; });
+  saveState(); renderAdminHW(); renderAdminTutor();
+  if(currentPage==='homework') renderHW();
+  if(currentPage==='tutoring') renderTutoring();
+  notify('บันทึกรายชื่อวิชาแล้ว');
+}
+
+// ════════════════════════════════════════════════════
+// ADMIN — HOMEWORK
+// ════════════════════════════════════════════════════
+function switchAdminTab(tab){
+  adminTab=tab;
+  ['hw','subjects','tutor','chat','users'].forEach(t=>{
+    const p=$('apanel-'+t), b=$('atab-'+t);
+    if(t===tab){ p&&p.classList.remove('hidden'); b&&(b.className='tab tab-yellow tab-active'); }
+    else { p&&p.classList.add('hidden'); b&&(b.className='tab'); }
+  });
+  if(tab==='chat') renderAdminChat();
+  if(tab==='users') renderAdminUsers();
+  if(tab==='subjects') renderSubjectsList();
+}
+function renderAdminHW(){
+  const tabsEl=$('admin-hw-tabs'); if(!tabsEl) return;
+  tabsEl.innerHTML=state.subjects.map((s,i)=>
+    `<button class="tab ${i===adminHwSub?'tab-yellow tab-active':''}" onclick="setAdminHWSub(${i})">${s}</button>`
+  ).join('');
+  const files=state.homeworkFiles[adminHwSub]||[];
+  const listEl=$('admin-file-list');
+  if(!files.length){ listEl.innerHTML='<div class="empty-state">ยังไม่มีไฟล์</div>'; return; }
+  listEl.innerHTML=files.map(f=>{
+    const codeHtml=state.codes[f.id]
+      ?`<span class="code-active">รหัสที่ยังไม่ได้ใช้: <b>${state.codes[f.id]}</b></span>`
+      :`<span class="code-none">ไม่มีรหัสที่ยังใช้ได้</span>`;
+    return `<div class="file-card">
+      <div class="file-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
+      <div class="file-info"><div class="file-name">${f.name}</div><div class="file-meta">${codeHtml}</div></div>
+      <div class="flex-row">
+        <button class="key-btn" onclick="adminGenCode('${f.id}')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>สร้างรหัส</button>
+        <button class="delete-btn" onclick="adminDeleteFile('${f.id}')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function setAdminHWSub(i){ adminHwSub=i; renderAdminHW(); }
+function adminUpload(){
+  const name=prompt('ชื่อไฟล์:','ไฟล์ใหม่.pdf'); if(!name) return;
+  const url=prompt('ลิงก์ไฟล์ (Google Drive / ว่างถ้าไม่มี):','') || '#';
+  const id='f'+Date.now();
+  if(!state.homeworkFiles[adminHwSub]) state.homeworkFiles[adminHwSub]=[];
+  state.homeworkFiles[adminHwSub].push({id,name,url,uploadedAt:new Date().toISOString().slice(0,10)});
+  saveState(); renderAdminHW(); notify('เพิ่มไฟล์สำเร็จ');
+}
+function adminDeleteFile(fileId){
+  if(!confirm('ลบไฟล์นี้?')) return;
+  state.homeworkFiles[adminHwSub]=state.homeworkFiles[adminHwSub].filter(f=>f.id!==fileId);
+  delete state.codes[fileId];
+  saveState(); renderAdminHW();
+  if(currentPage==='homework') renderHW();
+  notify('ลบไฟล์แล้ว');
+}
+function adminGenCode(fileId){
+  // ตรวจว่ายังมีรหัสที่ยังไม่ได้ใช้อยู่ไหม
+  if(state.codes[fileId]){
+    if(!confirm('มีรหัสที่ยังไม่ได้ใช้อยู่: '+state.codes[fileId]+'\nต้องการสร้างรหัสใหม่แทนที่ไหม?')) return;
+  }
+  const code=genCode();
+  state.codes[fileId]=code;
+  saveState(); renderAdminHW();
+  notify('รหัสใหม่: '+code);
+  alert('รหัสปลดล็อค: '+code+'\n\n⚠️ รหัสนี้ใช้ได้ 1 ครั้ง / 1 คน เท่านั้น');
+}
+
+// ════════════════════════════════════════════════════
+// ADMIN — TUTORING
+// ════════════════════════════════════════════════════
+function renderAdminTutor(){
+  const el=$('admin-tutor-list'); if(!el) return;
+  el.innerHTML=state.tutoring.map(t=>`
+    <div class="tutoring-card">
+      <div class="tutoring-header">
+        <div class="tutoring-subject">${t.subject}</div>
+        <button class="edit-btn" onclick="openEditTutor(${t.id})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>แก้ไข</button>
+      </div>
+      <p style="color:#cbd5e1;">${t.description||'(ยังไม่มีคำอธิบาย)'}</p>
+      <p style="color:#10b981;margin-top:8px;">฿${t.price}/ชม. | ${t.times||'-'}</p>
+    </div>`).join('');
+}
+function openEditTutor(id){
+  const t=state.tutoring[id];
+  $('edit-tutor-id').value=id;
+  $('edit-tutor-desc').value=t.description;
+  $('edit-tutor-price').value=t.price;
+  $('edit-tutor-times').value=t.times;
+  show('tutor-modal');
+}
+function saveTutor(){
+  const id=parseInt($('edit-tutor-id').value);
+  state.tutoring[id].description=$('edit-tutor-desc').value;
+  state.tutoring[id].price=parseInt($('edit-tutor-price').value)||0;
+  state.tutoring[id].times=$('edit-tutor-times').value;
+  saveState(); hide('tutor-modal'); renderAdminTutor();
+  if(currentPage==='tutoring') renderTutoring();
+  notify('บันทึกข้อมูลการติวแล้ว');
+}
+
+// ════════════════════════════════════════════════════
+// ADMIN — USERS & CODE LOG
+// ════════════════════════════════════════════════════
+function renderAdminUsers(){
+  const el=$('admin-user-list'); if(!el) return;
+  // ตาราง code log
+  const logs=state.codeLog||[];
+  const logHtml=logs.length===0
+    ? '<div class="empty-state">ยังไม่มีประวัติการใช้รหัส</div>'
+    : `<h4 style="color:#f59e0b;margin-bottom:12px;">📋 ประวัติการใช้รหัสทั้งหมด</h4>
+       <div style="overflow-x:auto;">
+       <table class="log-table">
+         <thead><tr><th>รหัส</th><th>ไฟล์</th><th>ผู้ใช้</th><th>เวลา</th><th>สถานะ</th></tr></thead>
+         <tbody>${logs.map(l=>`
+           <tr>
+             <td><b style="color:#fbbf24;">${l.code}</b></td>
+             <td>${l.fileName}</td>
+             <td style="color:#a5b4fc;">${l.usedBy}</td>
+             <td style="color:#64748b;">${l.usedAt}</td>
+             <td><span class="badge-used">ใช้แล้ว</span></td>
+           </tr>`).join('')}
+         </tbody>
+       </table></div>`;
+
+  // active codes
+  const activeCodes=Object.entries(state.codes);
+  const activeHtml=activeCodes.length===0
+    ? '<p style="color:#64748b;font-size:14px;">ไม่มีรหัสที่รอใช้งาน</p>'
+    : `<h4 style="color:#10b981;margin:20px 0 12px;">🔑 รหัสที่ยังไม่ได้ใช้ (รอการปลดล็อค)</h4>
+       <div style="overflow-x:auto;">
+       <table class="log-table">
+         <thead><tr><th>รหัส</th><th>File ID</th><th>สถานะ</th></tr></thead>
+         <tbody>${activeCodes.map(([fid,code])=>`
+           <tr>
+             <td><b style="color:#fbbf24;">${code}</b></td>
+             <td style="color:#64748b;font-size:12px;">${fid}</td>
+             <td><span class="badge-active">รอใช้งาน</span></td>
+           </tr>`).join('')}
+         </tbody>
+       </table></div>`;
+
+  // user list
+  const userHtml=`<h4 style="color:#94a3b8;margin:20px 0 12px;">👥 บัญชีผู้ใช้ทั้งหมด</h4>`+
+    (state.users.length===0?'<div class="empty-state">ยังไม่มีผู้ใช้สมัครสมาชิก</div>':
+    state.users.map(u=>`
+      <div class="file-card">
+        <div class="file-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="file-info">
+          <div class="file-name">${u.username}</div>
+          <div class="file-meta">ไฟล์ที่ปลดล็อค: ${u.unlockedFiles.length} ไฟล์</div>
+        </div>
+        <div style="color:#10b981;font-size:13px;">${u.unlockedFiles.join(', ')||'-'}</div>
+      </div>`).join(''));
+
+  el.innerHTML=activeHtml+logHtml+userHtml;
+}
+
+// ════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════
+updateHeader();
+showPage(isAdmin?'admin':'home');
+</script>
+</body>
+</html>
